@@ -20,21 +20,15 @@ button{border-radius:2px!important;transition:.2s!important;letter-spacing:.4px}
 .profiles-panel{margin-top:18px;padding:18px 19px}.profiles-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.profiles-head h3{font:600 13px Orbitron;margin:0}.profile-list{display:flex;gap:8px;flex-wrap:wrap}.profile-chip{display:flex;align-items:center;gap:9px;padding:10px 12px;background:#0a0813;border:1px solid #30244b;font-size:12px}.profile-chip b{color:#55f6ff;font:600 11px Orbitron}.profile-chip button{padding:2px 5px;background:transparent;color:#ff5479;border:0;font-size:17px}
 @media(max-width:800px){.hero h2:after{display:block;margin-top:8px}}
 
-/* Portão com movimento de portas de elevador */
-.gatevisual.elevator-gate{height:124px!important;gap:0!important;border:1px solid #3b3260!important;background:linear-gradient(180deg,#070610,#151027)!important;isolation:isolate}
-.elevator-frame{position:absolute;inset:8px 20%;border:2px solid #4b416a;box-shadow:0 0 18px #55f6ff10,inset 0 0 16px #0008;pointer-events:none}
-.elevator-door{position:absolute;top:10px;bottom:10px;width:30%;background:linear-gradient(90deg,#25203a 0%,#554b70 16%,#211b33 40%,#39304e 75%,#171324 100%);border:1px solid #756a91;box-shadow:inset 0 0 0 2px #171226,inset 0 0 18px #0008;z-index:2;transition:transform 1.15s cubic-bezier(.65,0,.25,1);will-change:transform}
-.elevator-door.left-door{left:20%;border-right:1px solid #a49abb}
-.elevator-door.right-door{right:20%;border-left:1px solid #a49abb;background:linear-gradient(270deg,#25203a 0%,#554b70 16%,#211b33 40%,#39304e 75%,#171324 100%)}
-.elevator-seam{position:absolute;top:10px;bottom:10px;left:50%;width:2px;transform:translateX(-50%);background:#55f6ff;box-shadow:0 0 10px #55f6ff;z-index:3;transition:opacity .2s}
-.elevator-light{position:absolute;left:50%;top:14px;bottom:14px;width:1px;background:#55f6ff;opacity:.15;box-shadow:0 0 18px 4px #55f6ff;transform:translateX(-50%);transition:opacity .3s}
+/* ÚNICA ALTERAÇÃO VISUAL: portão com duas folhas deslizantes estilo elevador */
+.gatevisual.elevator-gate .post{display:none}
+.gatevisual.elevator-gate .barrier{left:20%;right:20%;top:12px;height:76px;width:auto;transform:none!important;transform-origin:center;background:none;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.gatevisual.elevator-gate .door-panel{position:absolute;top:0;bottom:0;width:50%;border:1px solid #756a91;background:linear-gradient(90deg,#25203a 0%,#554b70 16%,#211b33 42%,#39304e 78%,#171324 100%);box-shadow:inset 0 0 0 2px #171226,inset 0 0 18px #0008;transition:transform 1.05s cubic-bezier(.65,0,.25,1);will-change:transform}
+.gatevisual.elevator-gate .left-door{left:0;border-right:1px solid #a49abb}
+.gatevisual.elevator-gate .right-door{right:0;border-left:1px solid #a49abb;background:linear-gradient(270deg,#25203a 0%,#554b70 16%,#211b33 42%,#39304e 78%,#171324 100%)}
 .gatevisual.elevator-gate.open .left-door{transform:translateX(-100%)}
 .gatevisual.elevator-gate.open .right-door{transform:translateX(100%)}
-.gatevisual.elevator-gate.open .elevator-seam{opacity:0}
-.gatevisual.elevator-gate.open .elevator-light{opacity:.8}
-.gatevisual.elevator-gate:not(.open) .left-door,.gatevisual.elevator-gate:not(.open) .right-door{transform:translateX(0)}
-@media(prefers-reduced-motion:reduce){.elevator-door{transition-duration:.01ms}}
-
+@media(prefers-reduced-motion:reduce){.gatevisual.elevator-gate .door-panel{transition-duration:.01ms}}
 </style>
 </head>
 <body>
@@ -45,7 +39,7 @@ button{border-radius:2px!important;transition:.2s!important;letter-spacing:.4px}
 <section class="panel"><div class="panel-head"><h3>01 / MONITORAMENTO AO VIVO</h3><span class="mini" id="faceCount">Nenhum rosto detectado</span></div><div class="camera"><video id="video" autoplay muted playsinline></video><div class="placeholder" id="placeholder"><div class="camicon">◉</div><strong>Câmera aguardando conexão</strong><span class="mini">Permita o acesso à webcam para iniciar</span></div><div class="scan" id="scan"></div></div><div class="camfoot"><button class="primary" id="startBtn">▶ Iniciar câmera</button><button class="secondary" id="stopBtn" disabled>■ Desligar câmera</button><button class="secondary" id="registerBtn" disabled>＋ Cadastrar rosto</button></div></section>
 <aside class="panel"><div class="panel-head"><h3>02 / PAINEL DE ACESSO</h3><span class="mini">STATUS DO SISTEMA</span></div>
 <div class="statusrow"><div class="statusicon">⌁</div><div><strong id="accessTitle">Aguardando rosto</strong><small id="accessDetail">Inicie a câmera para começar</small></div><span class="state" id="accessState">STANDBY</span></div>
-<div class="gate"><div class="mini">PORTÃO PRINCIPAL</div><div class="gatevisual elevator-gate" id="gateVisual"><div class="elevator-frame"></div><div class="elevator-door left-door"></div><div class="elevator-door right-door"></div><div class="elevator-seam"></div><div class="elevator-light"></div></div><div class="gateinfo"><strong>Estado do portão</strong><span class="closedlabel" id="gateState">● FECHADO</span></div></div>
+<div class="gate"><div class="mini">PORTÃO PRINCIPAL</div><div class="gatevisual elevator-gate" id="gateVisual"><div class="post"></div><div class="post"></div><div class="barrier"><span class="door-panel left-door"></span><span class="door-panel right-door"></span></div></div><div class="gateinfo"><strong>Estado do portão</strong><span class="closedlabel" id="gateState">● FECHADO</span></div></div>
 <div class="section"><h4>Validação de identidade</h4><p>Rostos cadastrados liberam o portão. Cadastre com a câmera ligada; os desconhecidos são negados automaticamente.</p><div class="actions"><button class="success" id="allowBtn" disabled>✓ Testar autorização</button><button class="danger" id="denyBtn" disabled>✕ Testar negação</button></div></div></aside>
 </main>
 <section class="panel profiles-panel"><div class="profiles-head"><h3>04 / ROSTOS AUTORIZADOS</h3><span class="mini" id="profileCount">0 CADASTROS</span></div><div class="profile-list" id="profileList"><span class="mini">Nenhum rosto cadastrado ainda.</span></div></section>
